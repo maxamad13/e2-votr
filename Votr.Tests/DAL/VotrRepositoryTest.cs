@@ -100,6 +100,8 @@ namespace Votr.Tests.DAL
             // Arrange
             ConnectMocksToDatastore();
 
+            datasource.Add(new Poll { Title = "blah", EndDate = DateTime.Now, StartDate = DateTime.Now });
+
             // Hijack the call to the Polls.Add method and put it the list using the List's Add method.
             mock_polls_table.Setup(m => m.Add(It.IsAny<Poll>())).Callback((Poll poll) => datasource.Add(poll));
 
