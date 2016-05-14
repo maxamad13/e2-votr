@@ -43,14 +43,38 @@ namespace Votr.Controllers
 
                 string Title = collection.Get("Title");
 
-                DateTime StartDate = DateTime.Now;
+                DateTime StartDate;
                 //DateTime.Parse(collection.Get("StartDate"));
-                DateTime EndDate = DateTime.Now;// DateTime.Parse(collection.Get("EndDate"));
+                bool successful = DateTime.TryParse(collection.Get("StartDate"), out StartDate);
+                if (!successful)
+                {
+                    ViewBag.ErrorMessage = "Start Date Invalid";
+                    ViewBag.Error = true;
+                    return View();
+                }
+                DateTime EndDate;
+                successful = DateTime.TryParse(collection.Get("EndDate"), out EndDate);
+                if (!successful)
+                {
+                    ViewBag.ErrorMessage = "End Date Invalid";
+                    ViewBag.Error = true;
+                    return View();
+                } else
+                {
+                    if (EndDate <= StartDate)
+                    {
+                        ViewBag.ErrorMessage = "End Date must be after the Start Date";
+                        ViewBag.Error = true;
+                        return View();
+                    }
+                    
+                }
+
 
 
                 string[] keys = collection.AllKeys;
                 List<string> options = new List<string>();
-
+                
                 foreach (var key in keys)
                 {
                     if (key.Contains("option-"))
