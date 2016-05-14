@@ -24,7 +24,15 @@ namespace Votr.Controllers
         // GET: Poll/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Poll found_poll = Repo.GetPollOrNull(id);
+            if (found_poll == null)
+            {
+                return RedirectToAction("Index");
+            } else
+            {
+                return View(found_poll);
+            }
+           
         }
 
         // GET: Poll/Create
