@@ -30,6 +30,7 @@ namespace Votr.Controllers
         // GET: Poll/Create
         public ActionResult Create()
         {
+            ViewBag.Error = false;
             return View();
         }
 
