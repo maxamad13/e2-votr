@@ -83,6 +83,13 @@ namespace Votr.Controllers
                     }
                 }
 
+                if (options.Count() < 2)
+                {
+                    ViewBag.ErrorMessage = "Must Provide At least Two Options for this Poll";
+                    ViewBag.Error = true;
+                    return View();
+                }
+
                 //Get User ID form the HTTP Context
                 string user_id = User.Identity.GetUserId();
 
