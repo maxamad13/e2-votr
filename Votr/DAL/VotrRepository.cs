@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using Votr.Models;
@@ -9,6 +10,7 @@ namespace Votr.DAL
     public class VotrRepository
     {
         public VotrContext context { get; set; }
+        public IDbSet<ApplicationUser> Users { get { return context.Users; } }
 
         public VotrRepository()
         {
@@ -19,6 +21,11 @@ namespace Votr.DAL
         public VotrRepository(VotrContext _context)
         {
             context = _context;
+        }
+
+        public ApplicationUser GetUser(string user_id)
+        {
+            return context.Users.FirstOrDefault(i => i.Id == user_id);
         }
 
         public int GetPollCount()

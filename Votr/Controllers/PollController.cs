@@ -62,9 +62,13 @@ namespace Votr.Controllers
                 string user_id = User.Identity.GetUserId();
 
                 // Get the User Manager
-                ApplicationUserManager manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-
-                Repo.AddPoll(Title, StartDate, EndDate, user, options);                
+                //ApplicationUserManager manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                ApplicationUser user = Repo.GetUser(user_id);
+                if (user != null)
+                {
+                    Repo.AddPoll(Title, StartDate, EndDate, user, options);
+                }
+                                
 
                 int test = 1;
                 // TODO: Add insert logic here
