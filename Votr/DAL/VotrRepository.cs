@@ -141,6 +141,29 @@ namespace Votr.DAL
             return tags;
         }
 
+        public bool CastVote(int poll_id, string user_id, int option_id)
+        {
+            bool success = true;
+            Option found_option = context.Options.FirstOrDefault(i => i.OptionId == option_id);
+            Poll found_poll = context.Polls.FirstOrDefault(i => i.PollId == poll_id); // This could really be GetPollOrNull
+            ApplicationUser found_user = context.Users.FirstOrDefault(i => i.Id == user_id); // This could really be GetUser
+            object[] things = new object[] { found_option, found_user, found_poll };
+
+            
+            if (things.Any(i => i == null))
+            {
+                success = false;
+            } else
+            {
+                context.Votes.Add(new Vote { Choice = found_option, Voter = found_user, Poll = found_poll });
+            }
+
+            //context.Votes.Add(new Vote { Choice = found_option, Voter = found_user, Poll = found_poll });
+
+            return success;
+
+        }
+
 
         // Create a Poll
 
