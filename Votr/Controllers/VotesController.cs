@@ -38,38 +38,13 @@ namespace Votr.Controllers
             return Ok(vote);
         }
 
-        // PUT: api/Votes/5
+        // PUT: api/Votes/5/
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutVote(int id, Vote vote)
+        [HttpPut]
+        public IHttpActionResult PutVote(int id, [FromUri]int optionselected)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            if (id != vote.VoteId)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(vote).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VoteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            Repo.CastVote(id, User.Identity.GetUserId(), optionselected);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -77,6 +52,11 @@ namespace Votr.Controllers
         [ResponseType(typeof(Vote))]
         public IHttpActionResult PostVote(Vote vote)
         {
+            //Get User ID form the HTTP Context
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser user = Repo.GetUser(user_id);
+
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
