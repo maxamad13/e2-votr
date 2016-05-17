@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,6 +17,7 @@ namespace Votr.Controllers
     public class VotesController : ApiController
     {
         private VotrContext db = new VotrContext();
+        private VotrRepository Repo = new VotrRepository();
 
         // GET: api/Votes
         public IQueryable<Vote> GetVotes()
