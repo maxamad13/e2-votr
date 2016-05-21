@@ -44,8 +44,18 @@ namespace Votr.Controllers
         public IHttpActionResult PutVote(int id, [FromUri]int optionselected)
         {
 
-            Repo.CastVote(id, User.Identity.GetUserId(), optionselected);
-            return StatusCode(HttpStatusCode.NoContent);
+            bool success = Repo.CastVote(id, User.Identity.GetUserId(), optionselected);
+
+            if (success)
+            {
+                return StatusCode(HttpStatusCode.NoContent);
+
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
         }
 
         // POST: api/Votes

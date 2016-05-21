@@ -34,7 +34,13 @@ app.controller("DetailsCtrl", function ($http) {
     self.CastVote = function (e) {
         //alert(JSON.stringify(this.vote));
         e.preventDefault();
-        $http.put('/api/Votes/' + this.vote.poll + '?optionselected='+this.vote.option, {})
+        $http.put('/api/Votes/' + this.vote.poll + '?optionselected=' + this.vote.option, {})
+            .error(function () {
+                alert('Failure');
+            })
+            .success(function () {
+                alert("Success");
+            });
         /*
         $http({
             method: 'POST',
