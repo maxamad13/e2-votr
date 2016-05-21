@@ -156,6 +156,7 @@ namespace Votr.DAL
             } else
             {
                 context.Votes.Add(new Vote { Choice = found_option, Voter = found_user, Poll = found_poll });
+                context.SaveChanges();
             }
 
             //context.Votes.Add(new Vote { Choice = found_option, Voter = found_user, Poll = found_poll });
