@@ -505,18 +505,33 @@ namespace Votr.Tests.DAL
         [TestMethod]
         public void RepoEnsureICanGetVotes()
         {
+
+            // Arrange
             Option one = new Option { OptionId = 1, Content = "Option 1" };
             Option two = new Option { OptionId = 2, Content = "Option 2" };
-            Poll my_poll = new Poll { PollId = 1, Options = , Title = "Test Poll" };
+            options_datasource.Add(one);
+            options_datasource.Add(two);
 
-            List<Option> poll_options = new List<Option>();
-            poll_options.Add(one);
-            poll_options.Add(two);
+            Poll my_poll = new Poll { PollId = 1, Options = options_datasource, Title = "Test Poll" };
+            polls_datasource.Add(my_poll);
 
             ApplicationUser user = new ApplicationUser();
             user.Id = "fake-user-id";
-            repo.AddPoll("Some Title", DateTime.Now, DateTime.Now, user, poll_options);
-            votes_datasource.Add(new Vote {VoteId = 1, Choice , Poll = });
+            votes_datasource.Add(new Vote {VoteId = 1, Choice = one, Poll = my_poll, Voter = user});
+            votes_datasource.Add(new Vote { VoteId = 2, Choice = one, Poll = my_poll, Voter = user });
+            votes_datasource.Add(new Vote { VoteId = 3, Choice = two, Poll = my_poll, Voter = user });
+            votes_datasource.Add(new Vote { VoteId = 4, Choice = one, Poll = my_poll, Voter = user });
+            votes_datasource.Add(new Vote { VoteId = 5, Choice = two, Poll = my_poll, Voter = user });
+
+            ConnectMocksToDatastore();
+
+            // Act
+            int poll_id = 1;
+            Dictionary<string,int> results_dictionary = repo.GetVotes(poll_id);
+
+            //Assert
+            Assert.AreEqual(3, results_dictionary["Option 1"]);
+            Assert.AreEqual(2, results_dictionary["Option 2"]);
         }
     }
 }
